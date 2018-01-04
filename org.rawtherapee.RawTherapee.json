@@ -1,0 +1,192 @@
+{
+    "app-id": "org.rawtherapee.RawTherapee",
+    "runtime": "org.gnome.Platform",
+    "runtime-version": "3.24",
+    "sdk": "org.gnome.Sdk",
+    "command": "rawtherapee",
+    "rename-desktop-file": "rawtherapee.desktop",
+    "rename-appdata-file": "rawtherapee.appdata.xml",
+    "rename-icon": "rawtherapee",
+    "finish-args": [
+        "--share=ipc",
+        "--socket=x11",
+        "--filesystem=host",
+        /* Needed for dconf to work */
+        "--filesystem=xdg-run/dconf",
+				"--filesystem=~/.config/dconf:ro",
+        "--talk-name=ca.desrt.dconf",
+				"--env=DCONF_USER_CONFIG_DIR=.config/dconf"
+    ],
+    "build-options": {
+        "cflags": "-O2",
+        "cxxflags": "-O2 -std=c++11",
+        "env": {
+            "V": "1"
+        }
+    },
+    "cleanup": [
+        "/include",
+        "/bin/exiv2*",
+        "/bin/*lensfun*",
+        "/bin/metacopy",
+        "/bin/pathtest",
+        "/lib/cmake",
+        "/lib/pkgconfig",
+        "/man",
+        "*.a",
+        "*.la"
+    ],
+    "modules": [
+        {
+            "name": "lensfun",
+            "cmake": true,
+            "config-opts": [
+                "-DCMAKE_INSTALL_LIBDIR=/app/lib"
+            ],
+            "build-options": {
+                "arch": {
+                    "aarch64": {
+                        "config-opts": [
+                            "-DBUILD_FOR_SSE=0",
+                            "-DBUILD_FOR_SSE2=0"
+                        ]
+                    }
+                }
+            },
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "https://downloads.sourceforge.net/project/lensfun/0.3.2/lensfun-0.3.2.tar.gz",
+                    "sha256": "ae8bcad46614ca47f5bda65b00af4a257a9564a61725df9c74cb260da544d331"
+                }
+            ]
+        },
+        {
+            "name": "exiv2",
+            "cmake": true,
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://www.exiv2.org/exiv2-0.25.tar.gz",
+                    "sha256": "c80bfc778a15fdb06f71265db2c3d49d8493c382e516cb99b8c9f9cbde36efa4"
+                }
+            ]
+        },
+				{
+            "name": "libfftw3",
+            "config-opts": ["--enable-float"],
+            "make-args": ["-j4"],
+            "sources": [
+								{
+										"type": "archive",
+										"url": "http://www.fftw.org/fftw-3.3.6-pl1.tar.gz",
+										"sha256": "1ef4aa8427d9785839bc767f3eb6a84fcb5e9a37c31ed77a04e7e047519a183d"
+								}
+						]
+				},
+				{
+						"name": "sigc++-2.0",
+						"config-opts": [ "--disable-documentation" ],
+						"sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/libsigc++/2.9/libsigc++-2.9.3.tar.xz",
+                    "sha256": "0bf9b301ad6198c550986c51150a646df198e8d1d235270c16486b0dda30097f"
+                }
+            ]
+				},
+       {
+            "name": "cairomm",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/cairomm/1.12/cairomm-1.12.0.tar.xz",
+                    "sha256": "a54ada8394a86182525c0762e6f50db6b9212a2109280d13ec6a0b29bfd1afe6"
+                }
+            ]
+			 },
+        {
+            "name": "glibmm",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/glibmm/2.48/glibmm-2.48.1.tar.xz",
+                    "sha256": "dc225f7d2f466479766332483ea78f82dc349d59399d30c00de50e5073157cdf"
+                }
+            ]
+				},
+        {
+            "name": "pangomm",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/pangomm/2.40/pangomm-2.40.1.tar.xz",
+                    "sha256": "9762ee2a2d5781be6797448d4dd2383ce14907159b30bc12bf6b08e7227be3af"
+                }
+            ]
+				},
+        {
+            "name": "atkmm",
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/atkmm/2.24/atkmm-2.24.2.tar.xz",
+                    "sha256": "ff95385759e2af23828d4056356f25376cfabc41e690ac1df055371537e458bd"
+                }
+            ]
+				},
+				{
+            "name": "gtkmm",
+            "config-opts": [ "--disable-documentation" ],
+            /* "build-options" : { "cxxflags": "-O2 -g -std=c++11" }, */
+            "sources": [
+                {
+                    "type": "archive",
+                    "url": "http://ftp.gnome.org/pub/GNOME/sources/gtkmm/3.18/gtkmm-3.18.0.tar.xz",
+                    "sha256": "829fa113daed74398c49c3f2b7672807f58ba85d0fa463f5bc726e1b0138b86b"
+                }
+            ]
+				},
+				{
+						"name": "libiptcdata",
+						"config-opts": [ "--disable-documentation" ],
+						"sources": [
+                {
+                    "type": "archive",
+                    "url": "http://prdownloads.sourceforge.net/libiptcdata/libiptcdata-1.0.4.tar.gz",
+                    "sha256": "79f63b8ce71ee45cefd34efbb66e39a22101443f4060809b8fc29c5eebdcee0e"
+                }
+            ]
+				},
+				{
+						"name":"zlib",
+						"buildsystem":"autotools",
+						"sources":[
+								{
+										"type":"archive",
+										"url":"https://github.com/madler/zlib/archive/v1.2.11.tar.gz",
+										"sha256":"629380c90a77b964d896ed37163f5c3a34f6e6d897311f1df2a7016355c45eff"
+								}
+						]
+				},
+				{
+						"name": "rawtherapree",
+						"cmake": true,
+						"build-options": {
+								"cxxflags": "-O3 -std=c++11 -Wno-deprecated-declarations -Wno-unused-result"
+						},
+						"config-opts": [
+								"-DCMAKE_BUILD_TYPE='release'",
+								"-DCACHE_NAME_SUFFIX=''",
+								"-DPROC_TARGET_NUMBER='2"
+						],
+						"sources": [
+                {
+                    "type": "archive",
+                    "url": "http://rawtherapee.com/shared/source/rawtherapee-5.3.tar.xz",
+                    "sha256": "97959c946b7cc346affce53efc4bf6eca4125873343f96d1fbe43a5c717f3ef8"
+                }
+            ]
+				}
+    ]
+}
