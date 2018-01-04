@@ -1,0 +1,7 @@
+.flatpak-builder/
+rawtherapee/
+repo/
+rawtherapee.flatpak
+rawtherapee.flatpak.sig
+rawtherapee.flatpakref
+Makefile.config
